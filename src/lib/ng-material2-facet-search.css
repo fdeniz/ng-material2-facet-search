@@ -1,0 +1,24 @@
+.filterInput {
+	border: none!important;
+	outline: none!important;
+}
+
+.transparentBackdrop {
+	background-color: transparent!important;
+}
+
+.inlineChipIcon {
+	width: 18px;
+	height: 18px;
+	font-size: 18px;
+	margin-right: 7px;
+	margin-left: 0;
+}
+
+:host-context .mat-checkbox-inner-container {
+	transform: scale(.7);
+}
+
+:host-context(.inlineChipCheckbox) label.mat-checkbox-layout div.mat-checkbox-inner-container {
+	transform: scale(.7);
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ng-material2-facet-search",
+  "lib": {
+    "entryFile": "src/public_api.ts"
+  }
+}

@@ -1,0 +1,104 @@
+<div fxLayout="column" fxLayoutAlign="start" class="mat-typography">
+
+	<h2 mat-dialog-title>
+		{{data.text}}
+	</h2>
+
+	<mat-dialog-content>
+		<p *ngIf="data.description">{{data.description}}</p>
+
+		<ng-template #loading>
+			<mat-progress-bar mode="buffer"></mat-progress-bar>
+		</ng-template>
+
+		<ng-container [ngSwitch]="true">
+
+			<div *ngSwitchCase="data.type === FacetDataType.Category || data.type === FacetDataType.CategorySingle"
+				fxLayout="column" fxLayoutGap="20px">
+
+				<mat-selection-list *ngIf="(data.options | async) as options; else loading">
+					<mat-list-option *ngFor="let item of options" [value]="item.value" [selected]="isItemSelected(item)"
+						(click)="addOptionToSelected(data, item) ">
+						<span>
+							{{ item.text ? item.text : "- empty -" }}
+							<small *ngIf="item.count">
+								<i>({{item.count}})</i>
+							</small>
+						</span>
+
+					</mat-list-option>
+				</mat-selection-list>
+
+			</div>
+			<div *ngSwitchCase="data.type === FacetDataType.Date" fxLayout="column" fxLayoutGap="20px">
+
+				<mat-form-field fxFill>
+					<input matInput autocomplete="off" [matDatepicker]="picker" [(ngModel)]="data.values[0].value"
+						placeholder="Choose a date" (focus)="isUpdate ? null : picker.open()" />
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				</mat-form-field>
+				<mat-datepicker #picker></mat-datepicker>
+
+			</div>
+			<div *ngSwitchCase="data.type === FacetDataType.DateRange" fxLayout="column">
+
+				<mat-form-field fxFill>
+					<input matInput autocomplete="off" [matDatepicker]="startDatePicker"
+						[(ngModel)]="data.values[0].value" placeholder="Choose a start date"
+						(focus)="isUpdate ? null : startDatePicker.open()" />
+					<mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+				</mat-form-field>
+				<mat-datepicker #startDatePicker></mat-datepicker>
+
+				<mat-form-field fxFill>
+					<input matInput autocomplete="off" [matDatepicker]="endDatePicker"
+						[(ngModel)]="data.values[1].value" placeholder="Choose an end date" />
+					<mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+				</mat-form-field>
+				<mat-datepicker #endDatePicker></mat-datepicker>
+
+			</div>
+			<div *ngSwitchCase="data.type === FacetDataType.Text" fxLayout="row">
+
+				<mat-form-field fxFlex="30">
+
+
+					<mat-select [(value)]="data.fixedFilterType || data.values[0].type" [disabled]="data.fixedFilterType" placeholder="Criteria Type">
+						<!--
+						<mat-option *ngFor="let type of FacetFilterType | keys" [value]="type.key">{{type.value}}</mat-option>
+						-->
+						<mat-option [value]="FacetFilterType.contains">Contains</mat-option>
+						<mat-option [value]="FacetFilterType.endsWith">Ends With</mat-option>
+						<mat-option [value]="FacetFilterType.equal">Equals</mat-option>
+						<mat-option [value]="FacetFilterType.startsWith">Starts With</mat-option>
+					</mat-select>
+				</mat-form-field>
+
+				<mat-form-field fxFlex="70">
+					<input matInput autocomplete="off" cdk-focus-initial [(ngModel)]="data.values[0].value"
+						placeholder="{{data.text + ' ' +  data.values[0].type  }}..." autofocus="true" />
+					<button mat-button *ngIf="data.values" matSuffix mat-icon-button aria-label="Clear"
+						(click)="data.values = undefined">
+						<mat-icon>close</mat-icon>
+					</button>
+				</mat-form-field>
+
+			</div>
+			<div *ngSwitchCase="data.type === FacetDataType.Boolean" fxLayout="column" fxLayoutGap="20px">
+				<mat-checkbox [(ngModel)]="data.values[0].value">{{data.text}}</mat-checkbox>
+			</div>
+		</ng-container>
+
+	</mat-dialog-content>
+
+	<mat-dialog-actions>
+
+		<button mat-button [color]="isUpdate ? 'accent' : 'primary'" (click)="onOk()"
+			[disabled]="isUpdateButtonDisabled()">{{isUpdate ? 'Update' : 'Add Filter'}}</button>
+
+		<button mat-button (click)="onCancel()">Cancel</button>
+
+		<button mat-button *ngIf="isUpdate" color="warn" (click)="removeFacet(this.data)">Remove</button>
+
+	</mat-dialog-actions>
+</div>

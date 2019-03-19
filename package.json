@@ -1,0 +1,30 @@
+{
+	"name": "ng-material2-facet-search",
+	"version": "0.1.2",
+	"description": "An Angular library that contains a facet search bar component, based on Angular team's Material Design components",
+	"license": "MIT",
+	"author": {
+		"name": "Firat Deniz",
+		"email": "itsfirat@gmail.com",
+		"url": "https://firat.dev"
+	},
+	"keywords": [
+		"angular",
+		"angular2",
+		"angular7",
+		"material",
+		"material2",
+		"facet",
+		"faceted",
+		"search",
+		"filter",
+		"table"
+	],
+	"peerDependencies": {
+		"@angular/common": "^7.2.9",
+		"@angular/core": "^7.2.9",
+		"lodash": "^4.17.11",
+		"@types/lodash": "^4.14.123",
+		"@angular/flex-layout": "^7.0.0-beta.24"
+	}
+}
