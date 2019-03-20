@@ -7,7 +7,7 @@ Google uses something similar in some of their internal portals like [Cloud Cons
 
 ---
 
-[Try Example App](https://ng-material2-facet-search-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ng-material2-facet-search-github-api-example))
+[Try Example App](https://ng-material2-facet-search-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ng-material2-facet-search-example))
 
 ![Stackblitz Example Github API](https://i.imgur.com/iLhZ9P0.png)
 
