@@ -14,7 +14,7 @@ Google uses something similar in some of their internal portals like [Cloud Cons
 ---
 
 
-[Try Table Example on Github API](https://ng-material2-facet-search-github-api-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ovxgde))
+[Try Table Example on Github API](https://ng-material2-facet-search-github-api-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ng-material2-facet-search-github-api-example))
 
 
 ![Stackblitz Example Github API](https://i.imgur.com/MGxJCk5.png)
