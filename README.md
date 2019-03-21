@@ -58,11 +58,20 @@ export class AppComponent implements OnInit {
 	// You can either define and configure your facets as static object array,
 	// or you can generate dynamically based on your data from back end.
 	public facets: Array<Facet> = [{
+		// facet's object name
 		name: 'userName',
+		// label text for ui (optional)
 		text: 'User Name',
+		// type of the facet, options are; 
+		// "Text" (input), "Boolean" (checkbox), "Category" (multi select), 
+		// "CategorySingle" (single select), "Date" (date picker) and "DateRange" (date pickers)
 		type: FacetDataType.Text,
+		// description text for ui (optional)
 		description: 'Please enter your user name (simple text input example)',
-		icon: 'person_outline'
+		// name of the material icon (optional) (https://material.io/tools/icons)
+		icon: 'person_outline',
+		// you can set a facet as readonly to disable editing.
+		readonly: false,
 	}, {
 		name: 'birthday',
 		text: 'Birthday',
@@ -88,6 +97,7 @@ export class AppComponent implements OnInit {
 		type: FacetDataType.CategorySingle,
 		icon: 'folder_open',
 		/* mock http service call  */
+		// you can define this facet's selection items as observable array, or fixed array.
 		options: of([
 			{ value: 'open', text: 'Open', count: 49 },
 			{ value: 'closed', text: 'Closed', count: 23 }
@@ -122,8 +132,6 @@ export class AppComponent implements OnInit {
 
 
 ```
-
-
 
 
 
