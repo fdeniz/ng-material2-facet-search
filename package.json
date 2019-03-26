@@ -1,6 +1,6 @@
 {
 	"name": "ng-material2-facet-search",
-	"version": "0.1.2",
+	"version": "0.1.4",
 	"description": "An Angular library that contains a facet search bar component, based on Angular team's Material Design components",
 	"license": "MIT",
 	"author": {

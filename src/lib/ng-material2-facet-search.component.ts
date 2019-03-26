@@ -16,6 +16,8 @@ export class NgMaterial2FacetSearchComponent implements OnInit {
 	@Input() placeholder = 'Filter Table...';
 	@Input() clearButtonText = 'Clear Filters';
 	@Input() clearButtonEnabled = true;
+	@Input() dateFormat = 'M/d/yyyy';
+
 
 	@Input() facetWidth = '400px';
 	@Input() facetHasBackdrop = true;

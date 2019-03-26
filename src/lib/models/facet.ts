@@ -5,7 +5,6 @@ export interface Facet {
 	name?: string;
 	text?: string;
 	description?: string;
-	groupText?: string;
 	readonly?: boolean;
 	type?: FacetDataType;
 	dataType?: 'boolean' | 'number' | 'string' | 'date';

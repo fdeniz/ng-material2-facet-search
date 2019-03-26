@@ -7,7 +7,7 @@
 		<mat-chip *ngFor="let facet of selectedFacets" [color]="facet.readonly ? 'accent' : ''"
 			(selectionChange)="chipSelected($event, facet)" (click)="selectedFacet = facet"
 			[selected]="facet === selectedFacet" fxFlex="initial"
-			matTooltip="{{facet.text + (facet.description ? ': ' + facet.description : '') + facet.readonly ? ' (Read-only)': ''}}"
+			matTooltip="{{facet.text + (facet.description ? ': ' + facet.description : '')}}"
 			matTooltipShowDelay="1000">
 			<mat-icon *ngIf="facet.icon" class="inlineChipIcon">{{facet.icon}}</mat-icon>
 
@@ -25,16 +25,17 @@
 				</ng-container>
 
 				<div *ngSwitchCase="FacetDataType.Date">
-					“{{facet.values[0].value | date:'M/d/yyyy'}}”
+					“{{facet.values[0].value | date:dateFormat}}”
 				</div>
 
 				<div *ngSwitchCase="FacetDataType.DateRange">
-					“{{facet.values[0].value | date:'M/d/yyyy'}}” ~ “{{facet.values[1].value | date:'M/d/yyyy'}}”
+					“{{facet.values[0].value | date:dateFormat}}” ~ “{{facet.values[1].value | date:dateFormat}}”
 				</div>
 
 				<div *ngSwitchCase="FacetDataType.Boolean" fxLayout="row" fxLayoutGap="15px">
 					<mat-checkbox [disabled]="true" class="inlineChipCheckbox" [(ngModel)]="facet.values[0].value">
-						{{facet.text}}</mat-checkbox>
+						{{facet.text}}
+					</mat-checkbox>
 				</div>
 
 				<span *ngSwitchCase="FacetDataType.Text">

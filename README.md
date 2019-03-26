@@ -3,18 +3,21 @@
 This is An Angular library that contains a [facet search](https://en.wikipedia.org/wiki/Faceted_search) bar component, based on Angular team's [Material Design components](https://material.angular.io/). 
 Google uses something similar in some of their internal portals like [Cloud Console](https://console.cloud.google.com) and [G-Suite Admin Console](https://gsuite.google.com/products/admin/).
 
+
+[Source at Github](https://github.com/fdeniz/ng-material2-facet-search)
+
 [![npm version](https://badge.fury.io/js/ng-material2-facet-search.svg)](https://www.npmjs.com/package/ng-material2-facet-search)
 
 ---
 
-[Try Example App](https://angular-xyprh9.stackblitz.io/) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-xyprh9))
+[Try Example App](https://ng-material2-facet-search-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ng-material2-facet-search-example))
 
 ![Stackblitz Example Github API](https://i.imgur.com/iLhZ9P0.png)
 
 ---
 
 
-[Try Table Example on Github API](https://angular-ovxgde.stackblitz.io/) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-ovxgde))
+[Try Table Example on Github API](https://ng-material2-facet-search-github-api-example.stackblitz.io) - ([Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ng-material2-facet-search-github-api-example))
 
 
 ![Stackblitz Example Github API](https://i.imgur.com/MGxJCk5.png)
@@ -58,11 +61,20 @@ export class AppComponent implements OnInit {
 	// You can either define and configure your facets as static object array,
 	// or you can generate dynamically based on your data from back end.
 	public facets: Array<Facet> = [{
+		// facet's object name
 		name: 'userName',
+		// label text for ui (optional)
 		text: 'User Name',
+		// type of the facet, options are; 
+		// "Text" (input), "Boolean" (checkbox), "Category" (multi select), 
+		// "CategorySingle" (single select), "Date" (date picker) and "DateRange" (date pickers)
 		type: FacetDataType.Text,
+		// description text for ui (optional)
 		description: 'Please enter your user name (simple text input example)',
-		icon: 'person_outline'
+		// name of the material icon (optional) (https://material.io/tools/icons)
+		icon: 'person_outline',
+		// you can set a facet as readonly to disable editing.
+		readonly: false,
 	}, {
 		name: 'birthday',
 		text: 'Birthday',
@@ -88,6 +100,7 @@ export class AppComponent implements OnInit {
 		type: FacetDataType.CategorySingle,
 		icon: 'folder_open',
 		/* mock http service call  */
+		// you can define this facet's selection items as observable array, or fixed array.
 		options: of([
 			{ value: 'open', text: 'Open', count: 49 },
 			{ value: 'closed', text: 'Closed', count: 23 }
@@ -122,8 +135,6 @@ export class AppComponent implements OnInit {
 
 
 ```
-
-
 
 
 
