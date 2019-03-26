@@ -39,6 +39,7 @@ npm i ng-material2-facet-search
 <ng-material2-facet-search
 	[source]="facets"
 	(searchUpdated)="filterUpdated($event)"
+	dateFormat="M/d/yyyy"
 	[chipLabelsEnabled]="true" [confirmOnRemove]="true"
 	[clearButtonEnabled]="true" placeholder="Add a filter..." clearButtonText="CLEAR FILTERS">
 </ng-material2-facet-search>
