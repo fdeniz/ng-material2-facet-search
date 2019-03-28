@@ -1,10 +1,14 @@
 <div fxLayout="column" fxLayoutAlign="start" class="mat-typography">
 
-	<h2 mat-dialog-title>
-		{{data.text}}
-	</h2>
+	<mat-toolbar fxLayout="row" fxLayoutAlign="space-between none" color="primary" class="modal-header">
+		<h2 mat-dialog-title>{{data.text}}</h2>
+		<button mat-icon-button (click)="onCancel()">
+			<mat-icon>clear</mat-icon>
+		</button>
+	</mat-toolbar>
 
 	<mat-dialog-content>
+
 		<p *ngIf="data.description">{{data.description}}</p>
 
 		<ng-template #loading>
@@ -63,7 +67,8 @@
 				<mat-form-field fxFlex="30">
 
 
-					<mat-select [(value)]="data.fixedFilterType || data.values[0].type" [disabled]="data.fixedFilterType" placeholder="Criteria Type">
+					<mat-select [(value)]="data.fixedFilterType || data.values[0].type"
+						[disabled]="data.fixedFilterType" placeholder="Criteria Type">
 						<!--
 						<mat-option *ngFor="let type of FacetFilterType | keys" [value]="type.key">{{type.value}}</mat-option>
 						-->
@@ -84,19 +89,17 @@
 				</mat-form-field>
 
 			</div>
-			<div *ngSwitchCase="data.type === FacetDataType.Boolean" fxLayout="column" fxLayoutGap="20px">
+			<div *ngSwitchCase="data.type === FacetDataType.Boolean" fxLayout="row" fxLayoutGap="30px">
 				<mat-checkbox [(ngModel)]="data.values[0].value">{{data.text}}</mat-checkbox>
 			</div>
 		</ng-container>
 
 	</mat-dialog-content>
 
-	<mat-dialog-actions>
+	<mat-dialog-actions dir="rtl">
 
 		<button mat-button [color]="isUpdate ? 'accent' : 'primary'" (click)="onOk()"
 			[disabled]="isUpdateButtonDisabled()">{{isUpdate ? 'Update' : 'Add Filter'}}</button>
-
-		<button mat-button (click)="onCancel()">Cancel</button>
 
 		<button mat-button *ngIf="isUpdate" color="warn" (click)="removeFacet(this.data)">Remove</button>
 

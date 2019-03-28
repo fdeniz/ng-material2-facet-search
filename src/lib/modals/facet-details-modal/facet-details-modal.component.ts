@@ -6,7 +6,7 @@ import { Facet, FacetDataType, FacetFilterType, FacetOption } from '../../models
 @Component({
 	selector: 'enl-facet-details-modal',
 	templateUrl: './facet-details-modal.component.html',
-	styleUrls: ['./facet-details-modal.component.scss']
+	styleUrls: ['./facet-details-modal.component.css']
 })
 export class FacetDetailsModalComponent implements OnInit {
 

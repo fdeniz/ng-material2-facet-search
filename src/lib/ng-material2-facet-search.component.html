@@ -1,85 +1,93 @@
-<div fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="20px">
+<div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between none">
 
-	<mat-icon>filter_list</mat-icon>
+	<div fxFlex="initial">
+		<mat-icon>filter_list</mat-icon>
+	</div>
+	<div fxFlex="grow">
 
-	<mat-chip-list #chipList [multiple]="false" fxFlex>
+		<mat-chip-list #chipList [multiple]="false">
 
-		<mat-chip *ngFor="let facet of selectedFacets" [color]="facet.readonly ? 'accent' : ''"
-			(selectionChange)="chipSelected($event, facet)" (click)="selectedFacet = facet"
-			[selected]="facet === selectedFacet" fxFlex="initial"
-			matTooltip="{{facet.text + (facet.description ? ': ' + facet.description : '')}}"
-			matTooltipShowDelay="1000">
-			<mat-icon *ngIf="facet.icon" class="inlineChipIcon">{{facet.icon}}</mat-icon>
+			<mat-chip *ngFor="let facet of selectedFacets" [color]="facet.readonly ? 'accent' : ''"
+				(selectionChange)="chipSelected($event, facet)" (click)="selectedFacet = facet"
+				[selected]="facet === selectedFacet" fxFlex="initial"
+				matTooltip="{{facet.text + (facet.description ? ': ' + facet.description : '')}}"
+				matTooltipShowDelay="1000">
+				<mat-icon *ngIf="facet.icon" class="inlineChipIcon">{{facet.icon}}</mat-icon>
 
-			<span *ngIf="chipLabelsEnabled" fxHide.xs>{{ facet.text + ': &nbsp;'}}</span>
+				<span *ngIf="chipLabelsEnabled" fxHide.xs>{{ facet.text + ': &nbsp;'}}</span>
 
-			<ng-container [ngSwitch]="facet.type">
+				<ng-container [ngSwitch]="facet.type">
 
-				<ng-container *ngIf="facet.values as options">
-					<div *ngSwitchCase="FacetDataType.Category">
-						{{options | filter: 'selected': true | csv:'text':' / '}}
+					<ng-container *ngIf="facet.values as options">
+						<div *ngSwitchCase="FacetDataType.Category">
+							{{options | filter: 'selected': true | csv:'text':' / '}}
+						</div>
+						<div *ngSwitchCase="FacetDataType.CategorySingle">
+							{{options | filter: 'selected': true | csv:'text':' / '}}
+						</div>
+					</ng-container>
+
+					<div *ngSwitchCase="FacetDataType.Date">
+						“{{facet.values[0].value | date:dateFormat}}”
 					</div>
-					<div *ngSwitchCase="FacetDataType.CategorySingle">
-						{{options | filter: 'selected': true | csv:'text':' / '}}
+
+					<div *ngSwitchCase="FacetDataType.DateRange">
+						“{{facet.values[0].value | date:dateFormat}}” ~ “{{facet.values[1].value | date:dateFormat}}”
 					</div>
+
+					<div *ngSwitchCase="FacetDataType.Boolean" fxLayout="row" fxLayoutGap="15px">
+						<mat-checkbox [disabled]="true" class="inlineChipCheckbox" [(ngModel)]="facet.values[0].value">
+							{{facet.text}}
+						</mat-checkbox>
+					</div>
+
+					<span *ngSwitchCase="FacetDataType.Text">
+						<ng-container [ngSwitch]="facet.values[0].type">
+							<span *ngSwitchCase="FacetFilterType.contains">
+								“..{{facet.values[0].value}}..”
+							</span>
+							<span *ngSwitchCase="FacetFilterType.equal">
+								“{{facet.values[0].value}}”
+							</span>
+							<span *ngSwitchCase="FacetFilterType.startsWith">
+								“{{facet.values[0].value}}...”
+							</span>
+							<span *ngSwitchCase="FacetFilterType.endsWith">
+								“...{{facet.values[0].value}}”
+							</span>
+						</ng-container>
+					</span>
 				</ng-container>
 
-				<div *ngSwitchCase="FacetDataType.Date">
-					“{{facet.values[0].value | date:dateFormat}}”
-				</div>
+				<mat-icon *ngIf="!facet.readonly" matChipRemove (click)="removeFacet(facet)">cancel</mat-icon>
 
-				<div *ngSwitchCase="FacetDataType.DateRange">
-					“{{facet.values[0].value | date:dateFormat}}” ~ “{{facet.values[1].value | date:dateFormat}}”
-				</div>
+			</mat-chip>
 
-				<div *ngSwitchCase="FacetDataType.Boolean" fxLayout="row" fxLayoutGap="15px">
-					<mat-checkbox [disabled]="true" class="inlineChipCheckbox" [(ngModel)]="facet.values[0].value">
-						{{facet.text}}
-					</mat-checkbox>
-				</div>
+			<mat-chip class="filterInputContainer" disableRipple disabled>
 
-				<span *ngSwitchCase="FacetDataType.Text">
-					<ng-container [ngSwitch]="facet.values[0].type">
-						<span *ngSwitchCase="FacetFilterType.contains">
-							“..{{facet.values[0].value}}..”
-						</span>
-						<span *ngSwitchCase="FacetFilterType.equal">
-							“{{facet.values[0].value}}”
-						</span>
-						<span *ngSwitchCase="FacetFilterType.startsWith">
-							“{{facet.values[0].value}}...”
-						</span>
-						<span *ngSwitchCase="FacetFilterType.endsWith">
-							“...{{facet.values[0].value}}”
-						</span>
-					</ng-container>
-				</span>
-			</ng-container>
+				<mat-icon>add</mat-icon>
 
-			<mat-icon *ngIf="!facet.readonly" matChipRemove (click)="removeFacet(facet)">cancel</mat-icon>
+				<input [matChipInputFor]="chipList" class="filterInput" [placeholder]="placeholder"
+					[matChipInputAddOnBlur]="false" [matAutocomplete]="auto">
 
-		</mat-chip>
+				<mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoCompleteSelected($event)"
+					[displayWith]="displayFn" panelWidth="250px">
+					<mat-option *ngFor="let facet of availableFacets" [value]="facet">
+						<mat-icon *ngIf="facet.icon">{{facet.icon}}</mat-icon>
+						<span>{{ facet.text }}</span>
+					</mat-option>
+				</mat-autocomplete>
 
-		<!-- <mat-form-field> -->
-		<input [matChipInputFor]="chipList" class="filterInput" [placeholder]="placeholder"
-			[matChipInputAddOnBlur]="false" [matAutocomplete]="auto">
-		<!-- </mat-form-field> -->
+			</mat-chip>
 
-	</mat-chip-list>
+		</mat-chip-list>
+
+	</div>
+
 
 	<button *ngIf="clearButtonEnabled && selectedFacets.length > 0" fxHide.xs mat-button (click)="reset()"
 		fxFlex="none">
 		{{clearButtonText}}
 	</button>
-
-	<div>
-		<mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoCompleteSelected($event)"
-			[displayWith]="displayFn">
-			<mat-option *ngFor="let facet of availableFacets" [value]="facet">
-				<mat-icon *ngIf="facet.icon">{{facet.icon}}</mat-icon>
-				<span>{{ facet.text }}</span>
-			</mat-option>
-		</mat-autocomplete>
-	</div>
 
 </div>
