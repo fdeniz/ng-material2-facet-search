@@ -24,7 +24,7 @@
 					<mat-list-option *ngFor="let item of options" [value]="item.value" [selected]="isItemSelected(item)"
 						(click)="addOptionToSelected(data, item) ">
 						<span>
-							{{ item.text ? item.text : "- empty -" }}
+							{{ item.text ? truncateText(item.text) : "- empty -" }}
 							<small *ngIf="item.count">
 								<i>({{item.count}})</i>
 							</small>
@@ -50,7 +50,7 @@
 					<mat-list-option *ngFor="let item of (data.options | async)" [value]="item.value" [selected]="isItemSelected(item)"
 						(click)="addOptionToSelected(data, item) ">
 						<span>
-							{{ item.text ? item.text : "- empty -" }}
+							{{ item.text ? truncateText(item.text) : "- empty -" }}
 							<small *ngIf="item.count">
 								<i>({{item.count}})</i>
 							</small>

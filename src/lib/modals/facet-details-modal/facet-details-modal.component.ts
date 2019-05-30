@@ -3,6 +3,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Facet, FacetDataType, FacetFilterType, FacetOption } from '../../models';
 
+
+const MAX_TEXT_LENGTH = 60;
+
 @Component({
 	selector: 'enl-facet-details-modal',
 	templateUrl: './facet-details-modal.component.html',
@@ -59,6 +62,18 @@ export class FacetDetailsModalComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+	}
+
+	truncateText(txt: string): string {
+		if(txt && txt.length){
+			return txt.length > MAX_TEXT_LENGTH ?
+				`${txt.substring(0, MAX_TEXT_LENGTH).trim()}...` :
+				txt ;
+
+		} else {
+			return txt;
+		}
 
 	}
 
