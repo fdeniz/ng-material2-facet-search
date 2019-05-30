@@ -31,6 +31,12 @@ export class FacetDetailsModalComponent implements OnInit {
 				// this.data.values = this.data.values || [{ type: FacetFilterType.Equals }];
 				break;
 
+			case FacetDataType.Typeahead:
+			case FacetDataType.TypeaheadSingle:
+				// Go ahead and run query by default
+				this.data.options = this.data.typeahead('');
+				break;
+
 			case FacetDataType.Date:
 				this.data.values = this.data.values || [{ type: FacetFilterType.equal }];
 				break;
@@ -81,6 +87,7 @@ export class FacetDetailsModalComponent implements OnInit {
 			option.selected = true;
 			switch (facet.type) {
 				case FacetDataType.Category:
+				case FacetDataType.Typeahead:
 					if (_.isNil(facet.values)) {
 						facet.values = [];
 					}
@@ -88,6 +95,7 @@ export class FacetDetailsModalComponent implements OnInit {
 					facet.values.push(option);
 					break;
 				case FacetDataType.CategorySingle:
+				case FacetDataType.TypeaheadSingle:
 					option.type = FacetFilterType.equal;
 					facet.values = [option];
 					break;

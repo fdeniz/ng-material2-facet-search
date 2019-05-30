@@ -25,6 +25,12 @@
 						<div *ngSwitchCase="FacetDataType.CategorySingle">
 							{{options | filter: 'selected': true | csv:'text':' / '}}
 						</div>
+						<div *ngSwitchCase="FacetDataType.Typeahead">
+							{{options | filter: 'selected': true | csv:'text':' / '}}
+						</div>
+						<div *ngSwitchCase="FacetDataType.TypeaheadSingle">
+							{{options | filter: 'selected': true | csv:'text':' / '}}
+						</div>
 					</ng-container>
 
 					<div *ngSwitchCase="FacetDataType.Date">

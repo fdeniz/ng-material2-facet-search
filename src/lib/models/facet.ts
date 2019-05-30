@@ -9,6 +9,8 @@ export interface Facet {
 	type?: FacetDataType;
 	dataType?: 'boolean' | 'number' | 'string' | 'date';
 	options?: Observable<FacetOption[]>;
+	typeahead?: (txt: string) => Observable<FacetOption[]>;
+	typeahedDebounce?: number;
 	values?: FacetOption[];
 	fixedFilterType?: FacetFilterType;
 	icon?: string;
