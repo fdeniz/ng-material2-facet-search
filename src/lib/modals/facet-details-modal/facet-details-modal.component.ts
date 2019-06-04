@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { fromEvent } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
 import { Facet, FacetDataType, FacetFilterType, FacetOption } from '../../models';
 
 
@@ -20,6 +22,8 @@ export class FacetDetailsModalComponent implements OnInit {
 
 	public FacetDataType = FacetDataType;
 	public FacetFilterType = FacetFilterType;
+
+	@ViewChild('typeAheadInput') typeAheadInput: ElementRef
 
 	constructor(
 		public dialogRef: MatDialogRef<FacetDetailsModalComponent>,
@@ -64,6 +68,21 @@ export class FacetDetailsModalComponent implements OnInit {
 	ngOnInit() {
 
 	}
+
+	/**
+	 * Setup debounce on the TypeAhead search
+	 */
+	ngAfterViewInit(){
+		fromEvent(this.typeAheadInput.nativeElement, 'keyup')
+			.pipe( debounceTime(this.data.typeahedDebounce || 300) )
+			.subscribe((event: any) => {
+				const txt = event.target.value;
+				this.data.options = this.data.typeahead(txt)
+			})
+	}
+
+
+
 
 	truncateText(txt: string): string {
 		if(txt && txt.length){

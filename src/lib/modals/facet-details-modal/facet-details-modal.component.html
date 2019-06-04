@@ -38,7 +38,7 @@
 				fxLayout="column" fxLayoutGap="20px">
 
 				<mat-form-field fxFlex="70">
-					<input matInput autocomplete="off" cdk-focus-initial [(ngModel)]="typeaheadText" (input)="data.options = data.typeahead(typeaheadText)"
+					<input matInput #typeAheadInput autocomplete="off" cdk-focus-initial [(ngModel)]="typeaheadText"
 						placeholder="{{data.text}} typeahead..." autofocus="true" />
 					<button mat-button *ngIf="data.values" matSuffix mat-icon-button aria-label="Clear"
 						(click)="data.values = undefined">
