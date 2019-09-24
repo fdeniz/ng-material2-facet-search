@@ -48,8 +48,10 @@ npm i ng-material2-facet-search
 ```javascript
 import { Component, OnInit } from '@angular/core';
 import { Facet, FacetDataType } from 'ng-material2-facet-search';
-import { of, } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
+import { MyRemoteService } from './MyComponent/remove.service.ts'
+
 
 @Component({
 	selector: 'app-component',
@@ -66,9 +68,11 @@ export class AppComponent implements OnInit {
 		name: 'userName',
 		// label text for ui (optional)
 		text: 'User Name',
-		// type of the facet, options are; 
-		// "Text" (input), "Boolean" (checkbox), "Category" (multi select), 
-		// "CategorySingle" (single select), "Date" (date picker) and "DateRange" (date pickers)
+		// type of the facet, options are;
+		// "Text" (input), "Boolean" (checkbox),
+		// "Category" (multi select), "CategorySingle" (single select),
+		// "Typeahead" (multi select typeahead), "TypeaheadSingle" (single select typeahead)
+		// "Date" (date picker) and "DateRange" (date pickers)
 		type: FacetDataType.Text,
 		// description text for ui (optional)
 		description: 'Please enter your user name (simple text input example)',
@@ -76,6 +80,16 @@ export class AppComponent implements OnInit {
 		icon: 'person_outline',
 		// you can set a facet as readonly to disable editing.
 		readonly: false,
+
+		// Typeahead related fields:
+		// Typehaead function
+		typeahead: function(txt){
+			// Call to external service that maps to FacteOptions
+			// See "Cities" Facet below
+		},
+		// Typehead debouce (in milliseconds) (default: 300)
+		typeahedDebounce: 300
+
 	}, {
 		name: 'birthday',
 		text: 'Birthday',
@@ -118,7 +132,29 @@ export class AppComponent implements OnInit {
 			{ value: 'b', text: 'Class B' },
 			{ value: 'c', text: 'Class C' }
 		]).pipe(delay(1200))
-	}];
+	}, {
+		name: 'city',
+		text: 'Cities',
+		description: 'Please select from cities.',
+		type: FacetDataType.Typeahead,
+		icon: 'location_city',
+		/* mock http service call  */
+		typeahead: function(txt){
+			const params = {
+				search: txt,
+				size: 5 // Limit results to show in Typeahead
+			}
+			return this.MyRemoteService.query(params)
+				.pipe(map((response) => {
+					// Map results to FacetsOptions for selection
+					response.results.map(item => ({
+						text: item.name,
+						value: item.value
+					}))
+				})
+		}
+	}
+	];
 
 	constructor() {
 

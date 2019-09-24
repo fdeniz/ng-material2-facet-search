@@ -24,7 +24,33 @@
 					<mat-list-option *ngFor="let item of options" [value]="item.value" [selected]="isItemSelected(item)"
 						(click)="addOptionToSelected(data, item) ">
 						<span>
-							{{ item.text ? item.text : "- empty -" }}
+							{{ item.text ? truncateText(item.text) : "- empty -" }}
+							<small *ngIf="item.count">
+								<i>({{item.count}})</i>
+							</small>
+						</span>
+
+					</mat-list-option>
+				</mat-selection-list>
+
+			</div>
+			<div *ngSwitchCase="data.type === FacetDataType.Typeahead || data.type === FacetDataType.TypeaheadSingle"
+				fxLayout="column" fxLayoutGap="20px">
+
+				<mat-form-field fxFlex="70">
+					<input matInput #typeAheadInput autocomplete="off" cdk-focus-initial [(ngModel)]="typeaheadText"
+						placeholder="{{data.text}} typeahead..." autofocus="true" />
+					<button mat-button *ngIf="data.values" matSuffix mat-icon-button aria-label="Clear"
+						(click)="data.values = undefined">
+						<mat-icon>close</mat-icon>
+					</button>
+				</mat-form-field>
+
+				<mat-selection-list *ngIf="data.options; else loading">
+					<mat-list-option *ngFor="let item of (data.options | async)" [value]="item.value" [selected]="isItemSelected(item)"
+						(click)="addOptionToSelected(data, item) ">
+						<span>
+							{{ item.text ? truncateText(item.text) : "- empty -" }}
 							<small *ngIf="item.count">
 								<i>({{item.count}})</i>
 							</small>

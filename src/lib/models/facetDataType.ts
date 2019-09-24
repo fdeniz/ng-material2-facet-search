@@ -5,4 +5,6 @@ export enum FacetDataType {
 	CategorySingle = 'CategorySingle',
 	Date = 'Date',
 	DateRange = 'DateRange',
+	Typeahead = 'Typeahead',
+	TypeaheadSingle = 'TypeaheadSingle'
 }

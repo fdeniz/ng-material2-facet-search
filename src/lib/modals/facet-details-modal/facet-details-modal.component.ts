@@ -1,7 +1,12 @@
 import * as _ from 'lodash';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { fromEvent } from 'rxjs'
+import { debounceTime } from 'rxjs/operators'
 import { Facet, FacetDataType, FacetFilterType, FacetOption } from '../../models';
+
+
+const MAX_TEXT_LENGTH = 60;
 
 @Component({
 	selector: 'enl-facet-details-modal',
@@ -18,6 +23,8 @@ export class FacetDetailsModalComponent implements OnInit {
 	public FacetDataType = FacetDataType;
 	public FacetFilterType = FacetFilterType;
 
+	@ViewChild('typeAheadInput') typeAheadInput: ElementRef
+
 	constructor(
 		public dialogRef: MatDialogRef<FacetDetailsModalComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: Facet) {
@@ -29,6 +36,12 @@ export class FacetDetailsModalComponent implements OnInit {
 
 			case FacetDataType.CategorySingle:
 				// this.data.values = this.data.values || [{ type: FacetFilterType.Equals }];
+				break;
+
+			case FacetDataType.Typeahead:
+			case FacetDataType.TypeaheadSingle:
+				// Go ahead and run query by default
+				this.data.options = this.data.typeahead('');
 				break;
 
 			case FacetDataType.Date:
@@ -53,6 +66,33 @@ export class FacetDetailsModalComponent implements OnInit {
 	}
 
 	ngOnInit() {
+
+	}
+
+	/**
+	 * Setup debounce on the TypeAhead search
+	 */
+	ngAfterViewInit(){
+		fromEvent(this.typeAheadInput.nativeElement, 'keyup')
+			.pipe( debounceTime(this.data.typeahedDebounce || 300) )
+			.subscribe((event: any) => {
+				const txt = event.target.value;
+				this.data.options = this.data.typeahead(txt)
+			})
+	}
+
+
+
+
+	truncateText(txt: string): string {
+		if(txt && txt.length){
+			return txt.length > MAX_TEXT_LENGTH ?
+				`${txt.substring(0, MAX_TEXT_LENGTH).trim()}...` :
+				txt ;
+
+		} else {
+			return txt;
+		}
 
 	}
 
@@ -81,6 +121,7 @@ export class FacetDetailsModalComponent implements OnInit {
 			option.selected = true;
 			switch (facet.type) {
 				case FacetDataType.Category:
+				case FacetDataType.Typeahead:
 					if (_.isNil(facet.values)) {
 						facet.values = [];
 					}
@@ -88,6 +129,7 @@ export class FacetDetailsModalComponent implements OnInit {
 					facet.values.push(option);
 					break;
 				case FacetDataType.CategorySingle:
+				case FacetDataType.TypeaheadSingle:
 					option.type = FacetFilterType.equal;
 					facet.values = [option];
 					break;
